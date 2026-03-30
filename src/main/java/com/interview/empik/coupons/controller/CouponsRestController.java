@@ -23,7 +23,7 @@ public class CouponsRestController {
         this.countryService = countryService;
     }
 
-    @PutMapping("/use")
+    @PostMapping("/use")
     public ResponseEntity<SuccessResponse> useCoupon(HttpServletRequest request, @Valid @RequestBody UseCoupon useCoupon) throws CouponValidationException {
         String ip = request.getHeader("X-Forwarded-For");
         if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {

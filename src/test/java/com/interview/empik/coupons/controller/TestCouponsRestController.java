@@ -87,7 +87,7 @@ public class TestCouponsRestController {
                 .header("X-Forwarded-For", "127.0.0.1")
                 .body(json)
         .when()
-                .put("/api/coupons/use")
+                .post("/api/coupons/use")
         .then()
                 .statusCode(httpCode)
                 .body("code", equalTo(internalCode));
@@ -102,7 +102,7 @@ public class TestCouponsRestController {
                 .header("X-Forwarded-For", "127.0.0.1")
                 .body(getUseCouponJson("TEST_CODE", "USER"))
         .when()
-                .put("/api/coupons/use")
+                .post("/api/coupons/use")
         .then()
                 .statusCode(400)
                 .body("code", equalTo(4001));
@@ -119,7 +119,7 @@ public class TestCouponsRestController {
                 .header("X-Forwarded-For", "127.0.0.1")
                 .body(getUseCouponJson("TEST_CODE", "USER"))
         .when()
-                .put("/api/coupons/use")
+                .post("/api/coupons/use")
         .then()
                 .statusCode(200)
                 .body("code", equalTo(2000));
@@ -129,7 +129,7 @@ public class TestCouponsRestController {
                 .header("X-Forwarded-For", "127.0.0.1")
                 .body(getUseCouponJson("TEST_CODE", "USER"))
         .when()
-                .put("/api/coupons/use")
+                .post("/api/coupons/use")
         .then()
                 .statusCode(400)
                 .body("code", equalTo(4003));
@@ -147,7 +147,7 @@ public class TestCouponsRestController {
                 .header("X-Forwarded-For", "127.0.0.1")
                 .body(getUseCouponJson("TEST_CODE", "USER"))
         .when()
-                .put("/api/coupons/use")
+                .post("/api/coupons/use")
         .then()
                 .statusCode(200)
                 .body("code", equalTo(2000));
@@ -157,7 +157,7 @@ public class TestCouponsRestController {
                 .header("X-Forwarded-For", "127.0.0.1")
                 .body(getUseCouponJson("TEST_CODE", "USER2"))
         .when()
-                .put("/api/coupons/use")
+                .post("/api/coupons/use")
         .then()
                 .statusCode(400)
                 .body("code", equalTo(4004));
@@ -174,7 +174,7 @@ public class TestCouponsRestController {
                 .header("X-Forwarded-For", "127.0.0.1")
                 .body(getUseCouponJson("TEST_CODE", "USER"))
         .when()
-                .put("/api/coupons/use")
+                .post("/api/coupons/use")
         .then()
                 .statusCode(400)
                 .body("code", equalTo(4002));
