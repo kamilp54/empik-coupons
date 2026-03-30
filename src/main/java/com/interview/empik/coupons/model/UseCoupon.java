@@ -16,7 +16,11 @@ public class UseCoupon {
     }
 
     public void setCode(String code) {
-        this.code = code;
+        if (code != null) {
+            this.code = code.toUpperCase();
+        } else {
+            this.code = null;
+        }
     }
 
     public String getUser() {

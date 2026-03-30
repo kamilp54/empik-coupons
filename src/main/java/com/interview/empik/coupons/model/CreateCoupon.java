@@ -20,7 +20,11 @@ public class CreateCoupon {
     }
 
     public void setCode(String code) {
-        this.code = code;
+        if (code != null) {
+            this.code = code.toUpperCase();
+        } else {
+            this.code = null;
+        }
     }
 
     public int getMaxUsages() {

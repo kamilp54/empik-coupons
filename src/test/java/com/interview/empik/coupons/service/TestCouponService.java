@@ -39,17 +39,23 @@ public class TestCouponService {
 
     @Test
     void shouldSuccessfullyCreateCoupon() throws CouponValidationException {
+        //given
         CreateCoupon coupon = getCreateCoupon();
         doReturn(false).when(couponRepository).checkIfCouponExists("TEST");
+        //when
         couponService.createCoupon(coupon);
+        //then
         verify(couponRepository).createCoupon(coupon);
     }
 
     @Test
     void shouldThrowExceptionForDuplicatedCode() {
+        //given
         CreateCoupon coupon = getCreateCoupon();
         doReturn(true).when(couponRepository).checkIfCouponExists("TEST");
+        //when
         CouponValidationException exception = assertThrows(CouponValidationException.class, () -> couponService.createCoupon(coupon));
+        //then
         verifyNoMoreInteractions(couponRepository);
         assertThat(exception.getErrorCode()).isEqualTo(4005);
         assertThat(exception.getMessage()).isEqualTo("The coupon TEST already exists");
@@ -57,20 +63,26 @@ public class TestCouponService {
 
     @Test
     void shouldSuccessfullyUseCoupon() throws CouponValidationException {
+        //given
         UseCoupon useCoupon = getUseCoupon();
         Coupon coupon = getCoupon();
         doReturn(coupon).when(couponRepository).findCouponByCode(anyString());
         doReturn(false).when(userCouponUsageRepository).checkIfUserUsedCoupon(anyLong(), anyString());
+        //when
         couponService.useCoupon(useCoupon, "Polska");
+        //then
         verify(couponRepository).updateUsage(anyLong());
         verify(userCouponUsageRepository).addUserCouponUsage(anyLong(), anyString());
     }
 
     @Test
     void shouldThrowExceptionWhenCouponNotExists() {
+        //given
         UseCoupon useCoupon = getUseCoupon();
         doReturn(null).when(couponRepository).findCouponByCode(anyString());
+        //when
         CouponValidationException exception = assertThrows(CouponValidationException.class, () -> couponService.useCoupon(useCoupon, "Polska"));
+        //then
         verifyNoMoreInteractions(couponRepository, userCouponUsageRepository);
         assertThat(exception.getErrorCode()).isEqualTo(4001);
         assertThat(exception.getMessage()).isEqualTo("The coupon does not exist");
@@ -78,10 +90,13 @@ public class TestCouponService {
 
     @Test
     void shouldThrowExceptionWhenCountryMismatch() {
+        //given
         UseCoupon useCoupon = getUseCoupon();
         Coupon coupon = getCoupon();
         doReturn(coupon).when(couponRepository).findCouponByCode(anyString());
+        //when
         CouponValidationException exception = assertThrows(CouponValidationException.class, () -> couponService.useCoupon(useCoupon, "USA"));
+        //then
         verifyNoMoreInteractions(couponRepository, userCouponUsageRepository);
         assertThat(exception.getErrorCode()).isEqualTo(4002);
         assertThat(exception.getMessage()).isEqualTo("The coupon TEST can only be used in Polska");
@@ -89,11 +104,14 @@ public class TestCouponService {
 
     @Test
     void shouldThrowExceptionWhenUserUsedCoupon() {
+        //given
         UseCoupon useCoupon = getUseCoupon();
         Coupon coupon = getCoupon();
         doReturn(coupon).when(couponRepository).findCouponByCode(anyString());
         doReturn(true).when(userCouponUsageRepository).checkIfUserUsedCoupon(anyLong(), anyString());
+        //when
         CouponValidationException exception = assertThrows(CouponValidationException.class, () -> couponService.useCoupon(useCoupon, "Polska"));
+        //then
         verifyNoMoreInteractions(couponRepository, userCouponUsageRepository);
         assertThat(exception.getErrorCode()).isEqualTo(4003);
         assertThat(exception.getMessage()).isEqualTo("The user has already used this coupon");
@@ -101,12 +119,15 @@ public class TestCouponService {
 
     @Test
     void shouldThrowExceptionWhenMaxUsageExceeded() {
+        //given
         UseCoupon useCoupon = getUseCoupon();
         Coupon coupon = getCoupon();
         coupon.setCurrentUsages(1);
         doReturn(coupon).when(couponRepository).findCouponByCode(anyString());
         doReturn(false).when(userCouponUsageRepository).checkIfUserUsedCoupon(anyLong(), anyString());
+        //when
         CouponValidationException exception = assertThrows(CouponValidationException.class, () -> couponService.useCoupon(useCoupon, "Polska"));
+        //then
         verifyNoMoreInteractions(couponRepository, userCouponUsageRepository);
         assertThat(exception.getErrorCode()).isEqualTo(4004);
         assertThat(exception.getMessage()).isEqualTo("The maximum number of coupon uses has been reached");
