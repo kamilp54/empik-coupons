@@ -67,7 +67,7 @@ public class TestCouponsRestController {
 
         given()
                 .contentType(ContentType.JSON)
-                .body(getCreateCouponJson("TEST_CODE", 1, "Polska"))
+                .body(getCreateCouponJson("TEST_CODE", 1, "Poland"))
         .when()
                 .post("/api/coupons/create")
         .then()
@@ -78,7 +78,7 @@ public class TestCouponsRestController {
     @ParameterizedTest
     @MethodSource("useCouponArguments")
     void shouldProperlyHandleUseCoupon(String json, int httpCode, int internalCode) {
-        doReturn("Polska").when(countryService).getCountryByIP(anyString());
+        doReturn("Poland").when(countryService).getCountryByIP(anyString());
 
         createTestCoupon(5);
 
@@ -95,7 +95,7 @@ public class TestCouponsRestController {
 
     @Test
     void shouldReturnErrorIfCouponDoesNotExist() {
-        doReturn("Polska").when(countryService).getCountryByIP(anyString());
+        doReturn("Poland").when(countryService).getCountryByIP(anyString());
 
         given()
                 .contentType(ContentType.JSON)
@@ -110,7 +110,7 @@ public class TestCouponsRestController {
 
     @Test
     void shouldReturnErrorIfUserAlreadyUsedThisCoupon() {
-        doReturn("Polska").when(countryService).getCountryByIP(anyString());
+        doReturn("Poland").when(countryService).getCountryByIP(anyString());
 
         createTestCoupon(5);
 
@@ -138,7 +138,7 @@ public class TestCouponsRestController {
 
     @Test
     void shouldReturnErrorIfMaxUsageHasBeenReached() {
-        doReturn("Polska").when(countryService).getCountryByIP(anyString());
+        doReturn("Poland").when(countryService).getCountryByIP(anyString());
 
         createTestCoupon(1);
 
@@ -183,7 +183,7 @@ public class TestCouponsRestController {
     private void createTestCoupon(int maxUsage) {
         given()
                 .contentType(ContentType.JSON)
-                .body(getCreateCouponJson("TEST_CODE", maxUsage, "Polska"))
+                .body(getCreateCouponJson("TEST_CODE", maxUsage, "Poland"))
         .when()
                 .post("/api/coupons/create")
         .then()
@@ -193,9 +193,9 @@ public class TestCouponsRestController {
 
     static Stream<Arguments> createCouponArguments() {
         return Stream.of(
-                Arguments.arguments(getCreateCouponJson("TEST_CODE", 1, "Polska"), 200, 2000),
-                Arguments.arguments(getCreateCouponJson("", 1, "Polska"), 400, 4000),
-                Arguments.arguments(getCreateCouponJson("TEST_CODE", 0, "Polska"), 400, 4000),
+                Arguments.arguments(getCreateCouponJson("TEST_CODE", 1, "Poland"), 200, 2000),
+                Arguments.arguments(getCreateCouponJson("", 1, "Poland"), 400, 4000),
+                Arguments.arguments(getCreateCouponJson("TEST_CODE", 0, "Poland"), 400, 4000),
                 Arguments.arguments(getCreateCouponJson("TEST_CODE", 1, ""), 400, 4000)
                 );
     }

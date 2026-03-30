@@ -69,7 +69,7 @@ public class TestCouponService {
         doReturn(coupon).when(couponRepository).findCouponByCode(anyString());
         doReturn(false).when(userCouponUsageRepository).checkIfUserUsedCoupon(anyLong(), anyString());
         //when
-        couponService.useCoupon(useCoupon, "Polska");
+        couponService.useCoupon(useCoupon, "Poland");
         //then
         verify(couponRepository).updateUsage(anyLong());
         verify(userCouponUsageRepository).addUserCouponUsage(anyLong(), anyString());
@@ -81,7 +81,7 @@ public class TestCouponService {
         UseCoupon useCoupon = getUseCoupon();
         doReturn(null).when(couponRepository).findCouponByCode(anyString());
         //when
-        CouponValidationException exception = assertThrows(CouponValidationException.class, () -> couponService.useCoupon(useCoupon, "Polska"));
+        CouponValidationException exception = assertThrows(CouponValidationException.class, () -> couponService.useCoupon(useCoupon, "Poland"));
         //then
         verifyNoMoreInteractions(couponRepository, userCouponUsageRepository);
         assertThat(exception.getErrorCode()).isEqualTo(4001);
@@ -99,7 +99,7 @@ public class TestCouponService {
         //then
         verifyNoMoreInteractions(couponRepository, userCouponUsageRepository);
         assertThat(exception.getErrorCode()).isEqualTo(4002);
-        assertThat(exception.getMessage()).isEqualTo("The coupon TEST can only be used in Polska");
+        assertThat(exception.getMessage()).isEqualTo("The coupon TEST can only be used in Poland");
     }
 
     @Test
@@ -110,7 +110,7 @@ public class TestCouponService {
         doReturn(coupon).when(couponRepository).findCouponByCode(anyString());
         doReturn(true).when(userCouponUsageRepository).checkIfUserUsedCoupon(anyLong(), anyString());
         //when
-        CouponValidationException exception = assertThrows(CouponValidationException.class, () -> couponService.useCoupon(useCoupon, "Polska"));
+        CouponValidationException exception = assertThrows(CouponValidationException.class, () -> couponService.useCoupon(useCoupon, "Poland"));
         //then
         verifyNoMoreInteractions(couponRepository, userCouponUsageRepository);
         assertThat(exception.getErrorCode()).isEqualTo(4003);
@@ -126,7 +126,7 @@ public class TestCouponService {
         doReturn(coupon).when(couponRepository).findCouponByCode(anyString());
         doReturn(false).when(userCouponUsageRepository).checkIfUserUsedCoupon(anyLong(), anyString());
         //when
-        CouponValidationException exception = assertThrows(CouponValidationException.class, () -> couponService.useCoupon(useCoupon, "Polska"));
+        CouponValidationException exception = assertThrows(CouponValidationException.class, () -> couponService.useCoupon(useCoupon, "Poland"));
         //then
         verifyNoMoreInteractions(couponRepository, userCouponUsageRepository);
         assertThat(exception.getErrorCode()).isEqualTo(4004);
@@ -137,7 +137,7 @@ public class TestCouponService {
     private CreateCoupon getCreateCoupon() {
         CreateCoupon coupon = new CreateCoupon();
         coupon.setCode("TEST");
-        coupon.setCountry("Polska");
+        coupon.setCountry("Poland");
         coupon.setMaxUsages(1);
         return coupon;
     }
@@ -153,7 +153,7 @@ public class TestCouponService {
         Coupon coupon = new Coupon();
         coupon.setCouponId(1L);
         coupon.setCode("TEST");
-        coupon.setCountry("Polska");
+        coupon.setCountry("Poland");
         coupon.setCurrentUsages(0);
         coupon.setMaxUsages(1);
         coupon.setCreatedDate(Timestamp.from(Instant.now()));
