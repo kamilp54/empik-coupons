@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: coupons
+  datasource:
+    url: jdbc:h2:mem:couponsdb
+    # url: jdbc:h2:file:./data/couponsdb
+    driver-class-name: org.h2.Driver
+    username: user
+    password: password
+  flyway:
+    sql-migration-prefix: V
+    sql-migration-separator: "__"
+    sql-migration-suffixes: .sql
